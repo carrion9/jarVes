@@ -1,6 +1,40 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import LoadingIndicator from '../common/LoadingIndicator';
+import './Menu.css';
+import{
+    Radio,
+    Input,
+    DatePicker
+} from 'antd';
+
+const RadioGroup = Radio.Group;
+
+function makeInputList(fields){
+    return fields.map( (field) => (
+        <Input className='alignComponent' addonBefore={field} id={field.toString().toLowerCase().replace(/[. ()%+-/]/g,'')}/> 
+    ));
+}
+
+function makeRadioList(fields, name, style){
+    if (style){
+        return (
+                <RadioGroup className='alignComponent' id={name}>
+                    {fields.map( (field) => (
+                        <Radio  style={style} value={field.toString().toLowerCase().replace(/[. ()$]/g,'')}>{field}</Radio> 
+                    ))}
+                </RadioGroup>
+            )
+    }else{
+        return (
+                <RadioGroup className='alignComponent' id={name}>
+                    {fields.map( (field) => (
+                        <Radio value={field.toString().toLowerCase().replace(/[. ]/g,'')}>{field}</Radio> 
+                    ))}
+                </RadioGroup>
+            )
+    }
+}
 
 class TCEstimate extends Component {
 	constructor(props) {
@@ -15,7 +49,51 @@ class TCEstimate extends Component {
             return <LoadingIndicator />
         }
 		return (
-				<div> Test</div>
+            <div>
+
+                <div className='alignLeft'>
+                    <Input addonBefore='Name' id='name'/>
+                    <Input addonBefore='Voyage' id='voyage'/>
+                    <div className='alignLeft'>
+                        {makeInputList(['Account', 'Commodity', 'Broker'])}
+                    </div>
+                    <div className='alignRight'>
+                        {makeInputList(['Laycan', 'Repos.'])}
+                        <DatePicker addonBefore='Date' id='date' />
+                    </div>
+                    <div className='alignClear' />
+
+                    <br />
+
+                    <div className='alignLeft'>
+                        {makeInputList(['Hire rate', 'Apprx. dur', 'Ballast bonus', 'Commisision'])}
+                        Ballast distance
+                        <br />
+                        {makeInputList(['Non Seca', 'Seca', 'Ifo price', 'Mdo price'])}
+                    </div>
+                    <div className='alignRight'>
+                        Port costs
+                        <br />
+                        {makeInputList(['Delivery', 'Redelivery'])}
+                        <br />
+                        <br />
+                        {makeInputList(['Canals', 'Miscel.', 'Lost/waiting days'])}
+                    </div>
+                    <div className='alignClear' />
+                </div>
+
+                <div className='alignRight'>
+                    <div className='alignLeft' >
+                        {makeInputList(['Speed', 'Ifo Ballast', 'Ifo Laden', 'Mdo Sea', 'Mdo port', 'Streaming'])}
+                    </div>
+                    <div className='alignRight'>
+                        {makeInputList(['Gross revenue', 'Bunker cost', 'Expenses', 'Net revenue', 'Sensitivity $100', 'Sensitivity 5 days', '$5.000 bb Gross', 'Total duration', 'Time charter rate'])}
+                    </div>
+                    <div className='alignClear' />
+                </div>
+
+                <div className='alignClear' />
+            </div>
 			);
 	}
 }

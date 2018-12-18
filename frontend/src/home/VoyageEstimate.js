@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import LoadingIndicator from '../common/LoadingIndicator';
-import './VoyageEstimate.css';
+import './Menu.css';
 import { 
     Input,
     Radio,
@@ -120,7 +120,7 @@ class VoyageEstimate extends Component {
 
                     RESULTS
                     <br />
-                    {makeInputList(['Gross revenue', 'Sailing bunkers', 'Loadport bunkers', 'Disport bunkers', 'Total bunker cost', 'Expenses', 'Commissions', 'Taxes', 'Exins', 'Net Revenue', 'Time Charter rate', 'Sensitivity +/-'])}
+                    {makeInputList(['Gross revenue', 'Sailing bunkers', 'Loadport bunkers', 'Disport bunkers', 'Total bunker cost', 'Expenses', 'Commissions', 'Taxes', 'Exins', 'Net Revenue', 'Time Charter rate', 'Sensitivity +/- $1'])}
                 </div>
 
                 <div className='alignClear' />

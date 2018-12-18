@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import LoadingIndicator from '../common/LoadingIndicator';
+import './Menu.css';
 
 class VesselEntry extends Component {
 	constructor(props) {
