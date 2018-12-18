@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import LoadingIndicator from '../common/LoadingIndicator';
 import './Menu.css';
+import { makeID } from '../util/Helpers';
 import { 
     Input,
     Radio,
@@ -12,7 +13,7 @@ const RadioGroup = Radio.Group;
 
 function makeInputList(fields){
     return fields.map( (field) => (
-        <Input className='alignComponent' addonBefore={field} id={field.toString().toLowerCase().replace(/[. ()%+-/]/g,'')}/> 
+        <Input className='alignComponent' addonBefore={field} id={makeID(field)}/> 
     ));
 }
 
@@ -21,7 +22,7 @@ function makeRadioList(fields, name, style){
         return (
                 <RadioGroup className='alignComponent' id={name}>
                     {fields.map( (field) => (
-                        <Radio  style={style} value={field.toString().toLowerCase().replace(/[. ()]/g,'')}>{field}</Radio> 
+                        <Radio  style={style} value={makeID(field)}>{field}</Radio> 
                     ))}
                 </RadioGroup>
             )
@@ -29,7 +30,7 @@ function makeRadioList(fields, name, style){
         return (
                 <RadioGroup className='alignComponent' id={name}>
                     {fields.map( (field) => (
-                        <Radio value={field.toString().toLowerCase().replace(/[. ]/g,'')}>{field}</Radio> 
+                        <Radio value={makeID(field)}>{field}</Radio> 
                     ))}
                 </RadioGroup>
             )

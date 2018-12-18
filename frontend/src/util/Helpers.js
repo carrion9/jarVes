@@ -1,4 +1,8 @@
 
+import {
+    Form
+} from 'antd';
+
 export function formatDate(dateString) {
     const date = new Date(dateString);
 
@@ -29,3 +33,8 @@ export function formatDateTime(dateTimeString) {
 
   return date.getDate() + ' ' + monthNames[monthIndex] + ' ' + year + ' - ' + date.getHours() + ':' + date.getMinutes();
 }  
+
+
+export function makeID(field){
+  return field.toString().toLowerCase().replace(/[. ()%+-/$]/g,'');
+}
