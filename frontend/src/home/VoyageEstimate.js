@@ -62,6 +62,8 @@ class VoyageEstimate extends Component {
                 <div className='alignLeft'>
 
                     <Input addonBefore='Voyage' id='Voyage'/>
+                    <br />
+                    <br />
                     <div className='alignLeft'>
                         {makeInputList(['Account', 'Commodity', 'Broker', 'Laycan', 'Quantity', 'Freight rate'])}
                         <br />
@@ -89,6 +91,8 @@ class VoyageEstimate extends Component {
                         Ballast distance
                         <br />
                         {makeInputList(['NON Seca (Ballast)', 'Seca (Ballast)'])}
+                        <br />
+                        <br />
                         Laden distance
                         <br />
                         {makeInputList(['NON Seca (Laden)', 'Seca (Laden)', 'Lfo price', 'Mdo price', 'Lost/waiting days'])}
@@ -106,18 +110,19 @@ class VoyageEstimate extends Component {
                 <div className='alignRight'>
 
                     <Input addonBefore='Name' id='name'/>
+                    <br />
+                    <br />
                     <div className='alignLeft'>
                         {makeInputList(['Speed', 'Ifo Ballast', 'Ifo Laden', 'Mdo Sea', 'IFO port idle', 'IFO port work', 'MGO port idle', 'MGO port work', 'Boiler port'])}
                     </div>
                     <div className='alignRight'>
                         {makeInputList(['Load port', 'Disch. port', 'Streaming margin'])}
+                        <br />
                         Days 
                         <br />
                         {makeInputList(['Streaming','Load days','Disch days', 'SHEX load', 'SHEX disch', 'Total duration'])}
                     </div>
                     <div className='alignClear' />
-
-                    <br />
 
                     RESULTS
                     <br />

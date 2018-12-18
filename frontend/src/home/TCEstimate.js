@@ -68,6 +68,8 @@ class TCEstimate extends Component {
 
                     <div className='alignLeft'>
                         {makeInputList(['Hire rate', 'Apprx. dur', 'Ballast bonus', 'Commisision'])}
+                        <br />
+                        <br />
                         Ballast distance
                         <br />
                         {makeInputList(['Non Seca', 'Seca', 'Ifo price', 'Mdo price'])}

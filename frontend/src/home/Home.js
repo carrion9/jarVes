@@ -34,7 +34,7 @@ class Home extends Component {
 			<div className="container">
 				<div className="content">
 					<StickyContainer>
-					    <Tabs defaultActiveKey="2" renderTabBar={renderTabBar}>
+					    <Tabs defaultActiveKey="1" renderTabBar={renderTabBar}>
 					      <TabPane tab="Position List" key="1"><PositionList /></TabPane>
 					      <TabPane tab="Vessel Entry" key="2"><VesselEntry /></TabPane>
 					      <TabPane tab="Voyage Estimate" key="3"><VoyageEstimate /></TabPane>
