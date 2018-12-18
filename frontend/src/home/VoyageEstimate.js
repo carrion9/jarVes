@@ -12,18 +12,28 @@ const RadioGroup = Radio.Group;
 
 function makeInputList(fields){
     return fields.map( (field) => (
-        <Input className='alignComponent' addonBefore={field} id={field.toString().toLowerCase().replace(/[. ]/g,'')}/> 
+        <Input className='alignComponent' addonBefore={field} id={field.toString().toLowerCase().replace(/[. ()%+-/]/g,'')}/> 
     ));
 }
 
-function makeRadioList(fields, name){
-    return (
-            <RadioGroup className='alignComponent' id={name}>
-                {fields.map( (field) => (
-                    <Radio value={field.toString().toLowerCase().replace(/[. ]/g,'')}>{field}</Radio> 
-                ))}
-            </RadioGroup>
-        )
+function makeRadioList(fields, name, style){
+    if (style){
+        return (
+                <RadioGroup className='alignComponent' id={name}>
+                    {fields.map( (field) => (
+                        <Radio  style={style} value={field.toString().toLowerCase().replace(/[. ()]/g,'')}>{field}</Radio> 
+                    ))}
+                </RadioGroup>
+            )
+    }else{
+        return (
+                <RadioGroup className='alignComponent' id={name}>
+                    {fields.map( (field) => (
+                        <Radio value={field.toString().toLowerCase().replace(/[. ]/g,'')}>{field}</Radio> 
+                    ))}
+                </RadioGroup>
+            )
+    }
 }
 
 class VoyageEstimate extends Component {
@@ -38,13 +48,23 @@ class VoyageEstimate extends Component {
         if(this.state.isLoading) {
             return <LoadingIndicator />
         }
+
+        const veerticalRadioStyle = {
+            display: 'block',
+            height: '30px',
+            lineHeight: '30px',
+        };
+
 		return (
             <div>
 
                 <div className='alignLeft'>
+
                     <Input addonBefore='Voyage' id='Voyage'/>
                     <div className='alignLeft'>
-                        {makeInputList(['Account', 'Commodity', 'Broker', 'Laycan', 'Quantity'])}
+                        {makeInputList(['Account', 'Commodity', 'Broker', 'Laycan', 'Quantity', 'Freight rate'])}
+                        <br />
+                        {makeRadioList(['LUMPSUM', 'Per MT Intake', 'Per LT Intake'], '3bradio', veerticalRadioStyle)}
                     </div>
                     <div className='alignRight'>
                         <div className='alignLeft' >
@@ -52,27 +72,55 @@ class VoyageEstimate extends Component {
                             <Input className='alignComponent' addonBefore='D/Rate' id='drate'/>
                         </div>
                         <div className='alignRight' >
-                             <RadioGroup className='alignComponent' id='lrateRadio'>
-                                <Radio value='x'>X</Radio>
-                                <Radio value='c'>C</Radio>
-                            </RadioGroup>
+                             {makeRadioList(['X','C'],'lrateRadio')}
+                             <br />
+                             {makeRadioList(['X','C'],'drateRadio')}
                         </div>
                         <div className='alignClear' />
                         {makeInputList(['Comm.', 'Repos.'])}
                         <DatePicker addonBefore='Date' id='date' />
                     </div>
                     <div className='alignClear' />
+
+                    <br />
+
+                    <div className='alignLeft'>
+                        Ballast distance
+                        <br />
+                        {makeInputList(['NON Seca (Ballast)', 'Seca (Ballast)'])}
+                        Laden distance
+                        <br />
+                        {makeInputList(['NON Seca (Laden)', 'Seca (Laden)', 'Lfo price', 'Mdo price', 'Lost/waiting days'])}
+                    </div>
+                    <div className='alignRight'>
+                        Port costs
+                        <br />
+                        {makeInputList(['Load', 'Disch', 'Others', 'Canals', 'Taxes %', 'Miscel.', 'Exins'])}
+                    </div>
+
+                    <div className='alignClear' />
+
                 </div>
 
                 <div className='alignRight'>
+
                     <Input addonBefore='Name' id='name'/>
                     <div className='alignLeft'>
-                        {makeInputList(['Speed', 'Ifo Ballast', 'Ifo Laden', 'Mdo Sea', 'Mdo Port'])}
+                        {makeInputList(['Speed', 'Ifo Ballast', 'Ifo Laden', 'Mdo Sea', 'IFO port idle', 'IFO port work', 'MGO port idle', 'MGO port work', 'Boiler port'])}
                     </div>
                     <div className='alignRight'>
-                        {makeInputList(['Load port', 'Disch. port', 'Streaming'])}
-                        {makeRadioList(['LUMPSUM','Per MT Intake','Per LT Intake'], '3bradio')}
+                        {makeInputList(['Load port', 'Disch. port', 'Streaming margin'])}
+                        Days 
+                        <br />
+                        {makeInputList(['Streaming','Load days','Disch days', 'SHEX load', 'SHEX disch', 'Total duration'])}
                     </div>
+                    <div className='alignClear' />
+
+                    <br />
+
+                    RESULTS
+                    <br />
+                    {makeInputList(['Gross revenue', 'Sailing bunkers', 'Loadport bunkers', 'Disport bunkers', 'Total bunker cost', 'Expenses', 'Commissions', 'Taxes', 'Exins', 'Net Revenue', 'Time Charter rate', 'Sensitivity +/-'])}
                 </div>
 
                 <div className='alignClear' />
