@@ -1,0 +1,19 @@
+.alignLeft {
+	width: 49%;
+	float: left;
+}
+
+.alignRight {
+	width: 49%;
+	float: right;
+}
+
+.alignComponent {
+	padding: 5px;
+	margin-bottom: 10px;
+}
+
+
+.alignClear {
+	clear: both;
+}
