@@ -2,40 +2,11 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import LoadingIndicator from '../common/LoadingIndicator';
 import './Menu.css';
-import { makeID } from '../util/Helpers';
+import { renderID } from '../util/Helpers';
 import {
-    Radio,
     Input,
     DatePicker
 } from 'antd';
-
-const RadioGroup = Radio.Group;
-
-function makeInputList(fields){
-    return fields.map( (field) => (
-        <Input className='alignComponent' addonBefore={field} id={makeID(field)}/> 
-    ));
-}
-
-function makeRadioList(fields, name, style){
-    if (style){
-        return (
-                <RadioGroup className='alignComponent' id={name}>
-                    {fields.map( (field) => (
-                        <Radio  style={style} value={makeID(field)}>{field}</Radio> 
-                    ))}
-                </RadioGroup>
-            )
-    }else{
-        return (
-                <RadioGroup className='alignComponent' id={name}>
-                    {fields.map( (field) => (
-                        <Radio value={makeID(field)}>{field}</Radio> 
-                    ))}
-                </RadioGroup>
-            )
-    }
-}
 
 class TCEstimate extends Component {
 	constructor(props) {
@@ -43,6 +14,37 @@ class TCEstimate extends Component {
         this.state = {
             isLoading: false
         };
+    }
+
+    calculate(){
+        if (this.state.hirerate && this.state.ballastbonus){
+            this.setState({
+                timecharterrate:  Number(this.state.hirerate) + Number(this.state.ballastbonus)
+            })
+        }
+    }
+
+    onChangeInput = (e) => {
+        const id = e.target.id;
+        const value = e.target.value;
+        this.setState({
+            [id]: value
+            },
+            this.calculate
+        );
+    }
+
+    renderInputList(fields, className='alignComponent', disabled=false){
+        return fields.map( (field) => (
+             <Input 
+                type='number' 
+                className={className}
+                addonBefore={field} 
+                id={renderID(field)}
+                onChange={this.onChangeInput.bind(this)}
+                disabled={disabled}/> 
+          
+        ))
     }
 
 	render(){
@@ -56,10 +58,10 @@ class TCEstimate extends Component {
                     <Input addonBefore='Name' id='name'/>
                     <Input addonBefore='Voyage' id='voyage'/>
                     <div className='alignLeft'>
-                        {makeInputList(['Account', 'Commodity', 'Broker'])}
+                        {this.renderInputList(['Account', 'Commodity', 'Broker'])}
                     </div>
                     <div className='alignRight'>
-                        {makeInputList(['Laycan', 'Repos.'])}
+                        {this.renderInputList(['Laycan', 'Repos.'])}
                         <DatePicker addonBefore='Date' id='date' />
                     </div>
                     <div className='alignClear' />
@@ -67,30 +69,36 @@ class TCEstimate extends Component {
                     <br />
 
                     <div className='alignLeft'>
-                        {makeInputList(['Hire rate', 'Apprx. dur', 'Ballast bonus', 'Commisision'])}
+                        {this.renderInputList(['Hire rate', 'Apprx. dur', 'Ballast bonus', 'Commisision'])}
                         <br />
                         <br />
-                        Ballast distance
-                        <br />
-                        {makeInputList(['Non Seca', 'Seca', 'Ifo price', 'Mdo price'])}
+                        <p>Ballast distance</p>
+                        {this.renderInputList(['Non Seca', 'Seca', 'Ifo price', 'Mdo price'])}
                     </div>
                     <div className='alignRight'>
-                        Port costs
+                        <p>Port costs</p>
+                        {this.renderInputList(['Delivery', 'Redelivery'])}
                         <br />
-                        {makeInputList(['Delivery', 'Redelivery'])}
                         <br />
-                        <br />
-                        {makeInputList(['Canals', 'Miscel.', 'Lost/waiting days'])}
+                        {this.renderInputList(['Canals', 'Miscel.', 'Lost/waiting days'])}
                     </div>
                     <div className='alignClear' />
                 </div>
 
                 <div className='alignRight'>
                     <div className='alignLeft' >
-                        {makeInputList(['Speed', 'Ifo Ballast', 'Ifo Laden', 'Mdo Sea', 'Mdo port', 'Streaming'])}
+                        {this.renderInputList(['Speed', 'Ifo Ballast', 'Ifo Laden', 'Mdo Sea', 'Mdo port', 'Streaming'])}
                     </div>
                     <div className='alignRight'>
-                        {makeInputList(['Gross revenue', 'Bunker cost', 'Expenses', 'Net revenue', 'Sensitivity $100', 'Sensitivity 5 days', '$5.000 bb Gross', 'Total duration', 'Time charter rate'])}
+                        {this.renderInputList(['Gross revenue', 'Bunker cost', 'Expenses', 'Net revenue'], 'alignResultDarkBlue', true)}
+                        {this.renderInputList(['Sensitivity $100', 'Sensitivity 5 days', '$5.000 bb Gross', 'Total duration'], 'alignResultGreen', true)}
+                        
+                        <Input 
+                            className='alignResultRed' 
+                            addonBefore='Time charter rate' 
+                            id='timecharterrate'
+                            disabled={true}
+                            value={this.state.timecharterrate}/> 
                     </div>
                     <div className='alignClear' />
                 </div>

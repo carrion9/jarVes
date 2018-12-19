@@ -7,11 +7,10 @@ import {
     Input,
     Button
 } from 'antd';
-import { makeID } from '../util/Helpers';
+import { renderID } from '../util/Helpers';
 
-function makeFormItemList(fields){
-    const FormItem = Form.Item;
-    const formItemLayout = {
+const FormItem = Form.Item;
+const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
         sm: { span: 8 },
@@ -20,10 +19,12 @@ function makeFormItemList(fields){
         xs: { span: 24 },
         sm: { span: 16 },
       }
-    };
+};
+
+function renderFormItemList(fields){
 
     return fields.map( (field) => (
-        <FormItem {...formItemLayout} label={field} id={makeID(field)}> 
+        <FormItem {...formItemLayout} label={field} id={renderID(field)}> 
             <Input className='formComp' />
         </FormItem>
     ));
@@ -45,10 +46,13 @@ class VesselEntry extends Component {
 				<div>
                     <Form>
                         <div className='alignLeft'>
-                            {makeFormItemList(['Name', 'DWT', 'Type', 'Flag', 'Built', 'Gear', 'Grain', 'Manager', 'Pic', 'Notes'])}
+                            {renderFormItemList(['Name', 'DWT', 'Type', 'Flag', 'Built', 'Gear', 'Grain', 'Manager', 'Pic'])}
+                            <FormItem {...formItemLayout} label='Note' id='note'> 
+                                <Input.TextArea className='formComp' autosize={{minRows: 3, maxRows: 8 }} />
+                            </FormItem>
                         </div>
                         <div className='alignRight'>
-                            {makeFormItemList(['Speed', 'Ifo-Ballast', 'Ifo-Laden', 'Port Idle', 'Port Working', 'MGO Port Idle', 'MGO Port Working', 'Boiler'])}
+                            {renderFormItemList(['Speed', 'Ifo-Ballast', 'Ifo-Laden', 'Port Idle', 'Port Working', 'MGO Port Idle', 'MGO Port Working', 'Boiler'])}
                             <div className='alignRight'>                                
                                 <Button type='primary'>Save</Button>
                                 <Button type='danger'>Clear</Button>

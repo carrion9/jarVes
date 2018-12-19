@@ -1,8 +1,4 @@
 
-import {
-    Form
-} from 'antd';
-
 export function formatDate(dateString) {
     const date = new Date(dateString);
 
@@ -35,6 +31,6 @@ export function formatDateTime(dateTimeString) {
 }  
 
 
-export function makeID(field){
+export function renderID(field){
   return field.toString().toLowerCase().replace(/[. ()%+-/$]/g,'');
 }

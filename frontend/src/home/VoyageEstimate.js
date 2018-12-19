@@ -2,40 +2,12 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import LoadingIndicator from '../common/LoadingIndicator';
 import './Menu.css';
-import { makeID } from '../util/Helpers';
+import { renderID } from '../util/Helpers';
 import { 
-    Input,
     Radio,
+    Input,
     DatePicker,
 } from 'antd';
-
-const RadioGroup = Radio.Group;
-
-function makeInputList(fields){
-    return fields.map( (field) => (
-        <Input className='alignComponent' addonBefore={field} id={makeID(field)}/> 
-    ));
-}
-
-function makeRadioList(fields, name, style){
-    if (style){
-        return (
-                <RadioGroup className='alignComponent' id={name}>
-                    {fields.map( (field) => (
-                        <Radio  style={style} value={makeID(field)}>{field}</Radio> 
-                    ))}
-                </RadioGroup>
-            )
-    }else{
-        return (
-                <RadioGroup className='alignComponent' id={name}>
-                    {fields.map( (field) => (
-                        <Radio value={makeID(field)}>{field}</Radio> 
-                    ))}
-                </RadioGroup>
-            )
-    }
-}
 
 class VoyageEstimate extends Component {
 	constructor(props) {
@@ -43,8 +15,68 @@ class VoyageEstimate extends Component {
         this.state = {
             isLoading: false
         };
+
     }
 
+    calculate(){
+        if (this.state.hirerate && this.state.ballastbonus){
+            this.setState({
+                timecharterrate:  Number(this.state.hirerate) + Number(this.state.ballastbonus)
+            })
+        }
+    }
+
+    onChangeInput = (e) => {
+        const id = e.target.id;
+        const value = e.target.value;
+        this.setState({
+            [id]: value
+            },
+            this.calculate
+        );
+    }
+
+    onChangeRadio = (e) => {
+        const id = e.target.name;
+        const value = e.target.value;
+        this.setState({
+            [id]: value
+            },
+            this.calculate
+        );
+    }
+
+    renderInputList(fields, className='alignComponent', disabled=false){
+        return fields.map( (field) => (
+             <Input 
+                type='number' 
+                className={className}
+                addonBefore={field} 
+                id={renderID(field)}
+                onChange={this.onChangeInput.bind(this)}
+                disabled={disabled}/> 
+          
+        ))
+    }
+
+
+    renderRadioList(fields, id, style={}, className='alignRadioGroup'){
+        const RadioGroup = Radio.Group;
+        return (
+            <RadioGroup 
+                className={className} 
+                name={id}
+                onChange={this.onChangeRadio.bind(this)}>
+                    {fields.map( (field) => (
+                        <Radio  
+                            style={style} 
+                            value={renderID(field)}>
+                                {field}
+                        </Radio> 
+                    ))}
+            </RadioGroup>
+        )
+    }
 	render(){
         if(this.state.isLoading) {
             return <LoadingIndicator />
@@ -65,22 +97,22 @@ class VoyageEstimate extends Component {
                     <br />
                     <br />
                     <div className='alignLeft'>
-                        {makeInputList(['Account', 'Commodity', 'Broker', 'Laycan', 'Quantity', 'Freight rate'])}
+                        {this.renderInputList(['Account', 'Commodity', 'Broker', 'Laycan', 'Quantity', 'Freight rate'])}
                         <br />
-                        {makeRadioList(['LUMPSUM', 'Per MT Intake', 'Per LT Intake'], '3bradio', veerticalRadioStyle)}
+                        {this.renderRadioList(['LUMPSUM', 'Per MT Intake', 'Per LT Intake'], '3bradio', veerticalRadioStyle)}
                     </div>
                     <div className='alignRight'>
                         <div className='alignLeft' >
-                            <Input className='alignComponent' addonBefore='L/Rate' id='lrate'/>
-                            <Input className='alignComponent' addonBefore='D/Rate' id='drate'/>
+                            <Input className='alignComponent' addonBefore='L/Rate' id='lrate' onChange={this.handleInputChange}/>
+                            <Input className='alignComponent' addonBefore='D/Rate' id='drate' onChange={this.handleInputChange}/>
                         </div>
                         <div className='alignRight' >
-                             {makeRadioList(['X','C'],'lrateRadio')}
+                             {this.renderRadioList(['X','C'],'lrateRadio')}
                              <br />
-                             {makeRadioList(['X','C'],'drateRadio')}
+                             {this.renderRadioList(['X','C'],'drateRadio')}
                         </div>
                         <div className='alignClear' />
-                        {makeInputList(['Comm.', 'Repos.'])}
+                        {this.renderInputList(['Comm.', 'Repos.'])}
                         <DatePicker addonBefore='Date' id='date' />
                     </div>
                     <div className='alignClear' />
@@ -88,19 +120,16 @@ class VoyageEstimate extends Component {
                     <br />
 
                     <div className='alignLeft'>
-                        Ballast distance
+                        <p>Ballast distance</p>
+                        {this.renderInputList(['NON Seca (Ballast)', 'Seca (Ballast)'])}
                         <br />
-                        {makeInputList(['NON Seca (Ballast)', 'Seca (Ballast)'])}
                         <br />
-                        <br />
-                        Laden distance
-                        <br />
-                        {makeInputList(['NON Seca (Laden)', 'Seca (Laden)', 'Lfo price', 'Mdo price', 'Lost/waiting days'])}
+                        <p>Laden distance</p>
+                        {this.renderInputList(['NON Seca (Laden)', 'Seca (Laden)', 'Lfo price', 'Mdo price', 'Lost/waiting days'])}
                     </div>
                     <div className='alignRight'>
-                        Port costs
-                        <br />
-                        {makeInputList(['Load', 'Disch', 'Others', 'Canals', 'Taxes %', 'Miscel.', 'Exins'])}
+                        <p>Port costs</p>
+                        {this.renderInputList(['Load', 'Disch', 'Others', 'Canals', 'Taxes %', 'Miscel.', 'Exins'])}
                     </div>
 
                     <div className='alignClear' />
@@ -113,20 +142,38 @@ class VoyageEstimate extends Component {
                     <br />
                     <br />
                     <div className='alignLeft'>
-                        {makeInputList(['Speed', 'Ifo Ballast', 'Ifo Laden', 'Mdo Sea', 'IFO port idle', 'IFO port work', 'MGO port idle', 'MGO port work', 'Boiler port'])}
+                        {this.renderInputList(['Speed', 'Ifo Ballast', 'Ifo Laden', 'Mdo Sea', 'IFO port idle', 'IFO port work', 'MGO port idle', 'MGO port work', 'Boiler port'])}
                     </div>
                     <div className='alignRight'>
-                        {makeInputList(['Load port', 'Disch. port', 'Streaming margin'])}
+                        {this.renderInputList(['Load port', 'Disch. port', 'Streaming margin'])}
                         <br />
                         Days 
                         <br />
-                        {makeInputList(['Streaming','Load days','Disch days', 'SHEX load', 'SHEX disch', 'Total duration'])}
+                        {this.renderInputList(['Streaming','Load days','Disch days', 'SHEX load', 'SHEX disch'], 'alignResultLightBlue', true)}
+                        <Input 
+                            className='alignResultRed' 
+                            addonBefore='Total duration'
+                            id='totalduration'
+                            disabled={true}
+                            value={this.state.totalduration}/> 
                     </div>
                     <div className='alignClear' />
 
-                    RESULTS
-                    <br />
-                    {makeInputList(['Gross revenue', 'Sailing bunkers', 'Loadport bunkers', 'Disport bunkers', 'Total bunker cost', 'Expenses', 'Commissions', 'Taxes', 'Exins', 'Net Revenue', 'Time Charter rate', 'Sensitivity +/- $1'])}
+                    <p>RESULTS</p>
+                    {this.renderInputList(['Gross revenue', 'Sailing bunkers', 'Loadport bunkers', 'Disport bunkers', 'Total bunker cost', 'Expenses', 'Commissions', 'Taxes', 'Exins', 'Net Revenue'], 'alignResultDarkBlue', true)}
+                    <Input 
+                        className='alignResultRed' 
+                        addonBefore='Time charter rate' 
+                        id='timecharterrate'
+                        disabled={true}
+                        value={this.state.timecharterrate}/> 
+                    <Input 
+                        className='alignResultGreen' 
+                        addonBefore='Sensitivity +/- $1'
+                        id='sensitivity1'
+                        disabled={true}
+                        value={this.state.sensitivity1}/> 
+                        
                 </div>
 
                 <div className='alignClear' />

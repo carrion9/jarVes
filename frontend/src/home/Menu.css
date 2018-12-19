@@ -10,6 +10,48 @@
 
 .alignComponent {
 	padding: 5px;
+  	text-align: right;
+}
+
+.ant-input-group-addon{
+	width: 147px;
+  	border-color: #bfbfbf;
+}
+
+.ant-input{
+  	border-color: #bfbfbf;
+}
+
+.ant-input-disabled{
+  	color: black;
+}
+
+.alignResultRed {
+	padding: 5px;
+  	text-align: right;
+  	background-color: #f0a0a2;
+}
+
+.alignResultGreen {
+	padding: 5px;
+  	text-align: right;
+  	background-color: #d8fdd0;
+}
+
+.alignResultDarkBlue {
+	padding: 5px;
+  	text-align: right;
+  	background-color: #bce5fc;
+}
+
+.alignResultLightBlue {
+	padding: 5px;
+  	text-align: right;
+  	background-color: #ccfdfc;
+}
+
+.alignRadioGroup {
+	padding: 5px;
 }
 
 
