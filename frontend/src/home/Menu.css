@@ -7,6 +7,15 @@
 	width: 49%;
 	float: right;
 }
+.alignCenter {
+	width: 49%;
+	float: left;
+	text-align: center;
+}
+
+.button{
+	width: 100px;
+}
 
 .alignComponent {
 	padding: 5px;
@@ -54,6 +63,19 @@
 	padding: 5px;
 }
 
+.alignLeftRadio {
+	width: 60%;
+	float: left;
+}
+
+.alignRightRadio {
+	width: 30%;
+	float: right;
+}
+
+.alignSelect {
+	width: 100%;
+}
 
 .alignClear {
 	clear: both;

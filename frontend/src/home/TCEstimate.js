@@ -5,8 +5,11 @@ import './Menu.css';
 import { renderID } from '../util/Helpers';
 import {
     Input,
-    DatePicker
+    DatePicker,
+    Select
 } from 'antd';
+
+const Option = Select.Option;
 
 class TCEstimate extends Component {
 	constructor(props) {
@@ -34,6 +37,18 @@ class TCEstimate extends Component {
         );
     }
 
+    handleChange = (e) =>{
+
+    }
+
+    handleFocus = (e) =>{
+
+    }
+
+    handleBlur = (e) =>{
+
+    }
+
     renderInputList(fields, className='alignComponent', disabled=false){
         return fields.map( (field) => (
              <Input 
@@ -55,7 +70,26 @@ class TCEstimate extends Component {
             <div>
 
                 <div className='alignLeft'>
-                    <Input addonBefore='Name' id='name'/>
+                    <span class="ant-input-group-wrapper">
+                        <span class="ant-input-wrapper ant-input-group">
+                            <span class="ant-input-group-addon">
+                                Name
+                            </span>
+                            <Select
+                                className='alignSelect'
+                                showSearch
+                                placeholder="Select a ship"
+                                optionFilterProp="children"
+                                onChange={this.handleChange}
+                                onFocus={this.handleFocus}
+                                onBlur={this.handleBlur}
+                                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+                                    <Option value="jack">Jack</Option>
+                                    <Option value="lucy">Lucy</Option>
+                                    <Option value="tom">Tom</Option>
+                            </Select>
+                        </span>
+                    </span>
                     <Input addonBefore='Voyage' id='voyage'/>
                     <div className='alignLeft'>
                         {this.renderInputList(['Account', 'Commodity', 'Broker'])}

@@ -7,13 +7,18 @@ import {
     Radio,
     Input,
     DatePicker,
+    Select,
+    Button
 } from 'antd';
+
+const Option = Select.Option;
 
 class VoyageEstimate extends Component {
 	constructor(props) {
         super(props);
         this.state = {
-            isLoading: false
+            isLoading: false,
+            new: false
         };
 
     }
@@ -26,7 +31,7 @@ class VoyageEstimate extends Component {
         }
     }
 
-    onChangeInput = (e) => {
+    handleChangeInput = (e) => {
         const id = e.target.id;
         const value = e.target.value;
         this.setState({
@@ -36,7 +41,7 @@ class VoyageEstimate extends Component {
         );
     }
 
-    onChangeRadio = (e) => {
+    handleChangeRadio = (e) => {
         const id = e.target.name;
         const value = e.target.value;
         this.setState({
@@ -46,6 +51,22 @@ class VoyageEstimate extends Component {
         );
     }
 
+    handleChangeSelect = (e) => {
+        this.setState({
+            voyage: e
+        })
+    }
+
+    handleNewCancelClick = () => {
+        this.setState({
+            new: !this.state.new
+        });
+    }
+
+    handleSave = () => {
+        console.log(this.state);
+    }
+
     renderInputList(fields, className='alignComponent', disabled=false){
         return fields.map( (field) => (
              <Input 
@@ -53,7 +74,7 @@ class VoyageEstimate extends Component {
                 className={className}
                 addonBefore={field} 
                 id={renderID(field)}
-                onChange={this.onChangeInput.bind(this)}
+                onChange={this.handleChangeInput.bind(this)}
                 disabled={disabled}/> 
           
         ))
@@ -66,7 +87,7 @@ class VoyageEstimate extends Component {
             <RadioGroup 
                 className={className} 
                 name={id}
-                onChange={this.onChangeRadio.bind(this)}>
+                onChange={this.handleChangeRadio.bind(this)}>
                     {fields.map( (field) => (
                         <Radio  
                             style={style} 
@@ -88,12 +109,40 @@ class VoyageEstimate extends Component {
             lineHeight: '30px',
         };
 
+        const voyage = this.state.new ? 
+                    (<Input addonBefore='Voyage' id='voyage' onChange={this.handleChangeInput}/>) :
+                    (<div>
+                        <span class="ant-input-group-wrapper">
+                            <span class="ant-input-wrapper ant-input-group">
+                                <span class="ant-input-group-addon">
+                                    Voyage
+                                </span>
+                                <Select
+                                    className='alignSelect'
+                                    showSearch
+                                    placeholder="Select a Voyage"
+                                    optionFilterProp="children"
+                                    onChange={this.handleChangeSelect}
+                                    onSelect={this.handleChangeSelect}
+                                    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+                                        <Option value="Jack">Jack</Option>
+                                        <Option value="Lucy">Lucy</Option>
+                                        <Option value="Tom">Tom</Option>
+                                </Select>
+                            </span>
+                        </span>
+                        <Input addonBefore='Save as' id='voyage' value={this.state.voyage}  onChange={this.handleChangeInput}/>
+                    </div>);
+
+        const newClearButton = this.state.new ?
+                    (<Button className='button' type='danger' onClick={this.handleNewCancelClick}>Cancel</Button>) :
+                    (<Button className='button' type='danger' onClick={this.handleNewCancelClick}>New</Button>)
 		return (
             <div>
 
                 <div className='alignLeft'>
-
-                    <Input addonBefore='Voyage' id='Voyage'/>
+                    { voyage }
+                    
                     <br />
                     <br />
                     <div className='alignLeft'>
@@ -102,11 +151,11 @@ class VoyageEstimate extends Component {
                         {this.renderRadioList(['LUMPSUM', 'Per MT Intake', 'Per LT Intake'], '3bradio', veerticalRadioStyle)}
                     </div>
                     <div className='alignRight'>
-                        <div className='alignLeft' >
-                            <Input className='alignComponent' addonBefore='L/Rate' id='lrate' onChange={this.handleInputChange}/>
-                            <Input className='alignComponent' addonBefore='D/Rate' id='drate' onChange={this.handleInputChange}/>
+                        <div className='alignLeftRadio' >
+                            <Input className='alignComponent' addonBefore='L/Rate' id='lrate' onChange={this.handleChangeInput}/>
+                            <Input className='alignComponent' addonBefore='D/Rate' id='drate' onChange={this.handleChangeInput}/>
                         </div>
-                        <div className='alignRight' >
+                        <div className='alignRightRadio' >
                              {this.renderRadioList(['X','C'],'lrateRadio')}
                              <br />
                              {this.renderRadioList(['X','C'],'drateRadio')}
@@ -134,11 +183,39 @@ class VoyageEstimate extends Component {
 
                     <div className='alignClear' />
 
+                    <br />
+                    <br />
+                    <div className='alignCenter'>
+                        <Button className='button' type='primary' onClick={this.handleSave}>Save</Button>
+                    </div>
+                    <div className='alignCenter'>
+                        {newClearButton}
+                    </div>
+                    <div className='alignClear' />
                 </div>
 
                 <div className='alignRight'>
 
-                    <Input addonBefore='Name' id='name'/>
+                    <span class="ant-input-group-wrapper">
+                        <span class="ant-input-wrapper ant-input-group">
+                            <span class="ant-input-group-addon">
+                                Name
+                            </span>
+                            <Select
+                                className='alignSelect'
+                                showSearch
+                                placeholder="Select a ship"
+                                optionFilterProp="children"
+                                onChange={this.handleChange}
+                                onFocus={this.handleFocus}
+                                onBlur={this.handleBlur}
+                                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+                                    <Option value="jack">Jack</Option>
+                                    <Option value="lucy">Lucy</Option>
+                                    <Option value="tom">Tom</Option>
+                            </Select>
+                        </span>
+                    </span>
                     <br />
                     <br />
                     <div className='alignLeft'>
