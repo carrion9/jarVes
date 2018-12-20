@@ -110,7 +110,7 @@ class VoyageEstimate extends Component {
         };
 
         const voyage = this.state.new ? 
-                    (<Input addonBefore='Voyage' id='voyage' onChange={this.handleChangeInput}/>) :
+                    (<div><Input addonBefore='Voyage' id='voyage' onChange={this.handleChangeInput}/><br /></div>) :
                     (<div>
                         <span class="ant-input-group-wrapper">
                             <span class="ant-input-wrapper ant-input-group">
@@ -136,14 +136,12 @@ class VoyageEstimate extends Component {
 
         const newClearButton = this.state.new ?
                     (<Button className='button' type='danger' onClick={this.handleNewCancelClick}>Cancel</Button>) :
-                    (<Button className='button' type='danger' onClick={this.handleNewCancelClick}>New</Button>)
+                    (<Button className='button' type='danger' onClick={this.handleNewCancelClick}>New</Button>);
 		return (
             <div>
 
                 <div className='alignLeft'>
                     { voyage }
-                    
-                    <br />
                     <br />
                     <div className='alignLeft'>
                         {this.renderInputList(['Account', 'Commodity', 'Broker', 'Laycan', 'Quantity', 'Freight rate'])}

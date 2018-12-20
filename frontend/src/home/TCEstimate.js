@@ -6,7 +6,8 @@ import { renderID } from '../util/Helpers';
 import {
     Input,
     DatePicker,
-    Select
+    Select,
+    Button
 } from 'antd';
 
 const Option = Select.Option;
@@ -15,7 +16,8 @@ class TCEstimate extends Component {
 	constructor(props) {
         super(props);
         this.state = {
-            isLoading: false
+            isLoading: false,
+            new: false
         };
     }
 
@@ -27,7 +29,7 @@ class TCEstimate extends Component {
         }
     }
 
-    onChangeInput = (e) => {
+    handleChangeInput = (e) => {
         const id = e.target.id;
         const value = e.target.value;
         this.setState({
@@ -37,16 +39,20 @@ class TCEstimate extends Component {
         );
     }
 
-    handleChange = (e) =>{
-
+    handleChangeSelect = (e) => {
+        this.setState({
+            voyage: e
+        })
     }
 
-    handleFocus = (e) =>{
-
+    handleNewCancelClick = () => {
+        this.setState({
+            new: !this.state.new
+        });
     }
 
-    handleBlur = (e) =>{
-
+    handleSave = () => {
+        console.log(this.state);
     }
 
     renderInputList(fields, className='alignComponent', disabled=false){
@@ -56,16 +62,47 @@ class TCEstimate extends Component {
                 className={className}
                 addonBefore={field} 
                 id={renderID(field)}
-                onChange={this.onChangeInput.bind(this)}
+                onChange={this.handleChangeInput.bind(this)}
                 disabled={disabled}/> 
           
         ))
     }
 
+
+
 	render(){
         if(this.state.isLoading) {
             return <LoadingIndicator />
         }
+
+        const voyage = this.state.new ? 
+                    (<div><Input addonBefore='Voyage' id='voyage' onChange={this.handleChangeInput}/><br /></div>) :
+                    (<div>
+                        <span class="ant-input-group-wrapper">
+                            <span class="ant-input-wrapper ant-input-group">
+                                <span class="ant-input-group-addon">
+                                    Voyage
+                                </span>
+                                <Select
+                                    className='alignSelect'
+                                    showSearch
+                                    placeholder="Select a Voyage"
+                                    optionFilterProp="children"
+                                    onChange={this.handleChangeSelect}
+                                    onSelect={this.handleChangeSelect}
+                                    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+                                        <Option value="Jack">Jack</Option>
+                                        <Option value="Lucy">Lucy</Option>
+                                        <Option value="Tom">Tom</Option>
+                                </Select>
+                            </span>
+                        </span>
+                        <Input addonBefore='Save as' id='voyage' value={this.state.voyage}  onChange={this.handleChangeInput}/>
+                    </div>);
+
+        const newClearButton = this.state.new ?
+                    (<Button className='button' type='danger' onClick={this.handleNewCancelClick}>Cancel</Button>) :
+                    (<Button className='button' type='danger' onClick={this.handleNewCancelClick}>New</Button>);
 		return (
             <div>
 
@@ -90,7 +127,9 @@ class TCEstimate extends Component {
                             </Select>
                         </span>
                     </span>
-                    <Input addonBefore='Voyage' id='voyage'/>
+                    
+                    { voyage }
+                    <br />
                     <div className='alignLeft'>
                         {this.renderInputList(['Account', 'Commodity', 'Broker'])}
                     </div>
@@ -108,6 +147,7 @@ class TCEstimate extends Component {
                         <br />
                         <p>Ballast distance</p>
                         {this.renderInputList(['Non Seca', 'Seca', 'Ifo price', 'Mdo price'])}
+
                     </div>
                     <div className='alignRight'>
                         <p>Port costs</p>
@@ -115,6 +155,16 @@ class TCEstimate extends Component {
                         <br />
                         <br />
                         {this.renderInputList(['Canals', 'Miscel.', 'Lost/waiting days'])}
+                    </div>
+                    <div className='alignClear' />
+
+                    <br />
+                    <br />
+                    <div className='alignCenter'>
+                        <Button className='button' type='primary' onClick={this.handleSave}>Save</Button>
+                    </div>
+                    <div className='alignCenter'>
+                        {newClearButton}
                     </div>
                     <div className='alignClear' />
                 </div>
